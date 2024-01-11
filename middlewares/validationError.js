@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
 
+// function to return the errors found by express-validator
 const validateRequest = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {

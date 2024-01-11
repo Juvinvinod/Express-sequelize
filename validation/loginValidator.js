@@ -1,21 +1,7 @@
 const { body } = require('express-validator');
 
-// validator function used to check registered user details
-const newUser = [
-  body('name')
-    .trim()
-    .notEmpty()
-    .withMessage('Cannot be empty')
-    .isString()
-    .withMessage('Must be a string')
-    .isLength({ min: 3 })
-    .withMessage('Cannot be less than 3 letters')
-    .escape(),
-  body('email')
-    .isEmail()
-    .withMessage('Not a valid email')
-    .normalizeEmail()
-    .escape(),
+// validator function used to check login details
+const ValidateLogin = [
   body('phone_number')
     .notEmpty()
     .withMessage('Cannot be empty')
@@ -30,4 +16,4 @@ const newUser = [
     .withMessage('Password must contain both letters and numbers'),
 ];
 
-module.exports = newUser;
+module.exports = ValidateLogin;

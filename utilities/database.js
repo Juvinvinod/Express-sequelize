@@ -1,5 +1,6 @@
 const { sequelize } = require('../models');
 
+// connect to the database
 const db = async () => {
   try {
     await sequelize.authenticate();
