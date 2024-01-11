@@ -6,3 +6,8 @@ To RUN this application follow these steps:
 4) Rename file name ".env.example" to ".env"
 5) Enter the port number inside .env
 6) App can be started using the command "npm run dev"
+7) migrations and seeding are done using sequelize-cli
+ a) create a db using the command "npx sequelize db:create"
+ b) next perform migration using "npx sequelize db:migrate"
+ c) seeding of dummy data done using "npx sequelize db:seed:all"
+ Note: The password for all the dummy data is "asdf1234",The token is added in dummy data.Token can be used for protected routes

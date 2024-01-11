@@ -114,6 +114,8 @@ const reportSpam = async (req, res) => {
         data: '',
       });
     }
+    validId.spam_reported = true;
+    await validId.save();
     await Spam.create({
       contact_id: data.contact_id,
       user_id: data.user_id,
