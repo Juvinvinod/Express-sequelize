@@ -5,7 +5,7 @@ const validateRequest = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
     res.status(422).send({
-      status: 'error',
+      status: 'failed',
       errors: error.array(),
     });
   } else {

@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 
 const { Op } = require('sequelize');
-const { User, Contact, Spam } = require('../models');
+const { User, Contact, Spam, sequelize } = require('../models');
 
 // check if a phone number exists else create a new user
 const createUser = async (req, res) => {
@@ -41,7 +41,7 @@ const createUser = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: 'failed',
       message: 'Database error',
       data: '',
     });
@@ -78,7 +78,7 @@ const login = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: 'failed',
       message: 'Database error',
       data: '',
     });
@@ -127,7 +127,7 @@ const reportSpam = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: 'failed',
       message: 'Database error',
       data: '',
     });
@@ -151,19 +151,10 @@ const search = async (req, res) => {
     let query = '';
     if (name) {
       query = {
-        [Op.or]: [
-          {
-            name: {
-              [Op.iLike]: `${name}%`,
-            },
-          },
-          {
-            name: {
-              [Op.iLike]: `%${name}%`,
-              [Op.notILike]: `%${name}%`,
-            },
-          },
-        ],
+        name: {
+          [Op.iLike]: `${name}%`,
+          [Op.iLike]: `%${name}%`,
+        },
       };
     } else {
       query = {
@@ -174,8 +165,13 @@ const search = async (req, res) => {
       limit,
       offset,
       where: query,
-      include: [User],
-      order: [['name', 'ASC']],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'email'],
+        },
+      ],
+      order: [[sequelize.literal(`"Contact"."name" ILIKE '${name}%' DESC`)]],
     });
     if (number) {
       result = result.filter((response) => response.user_id);
@@ -186,7 +182,7 @@ const search = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: 'failed',
       message: 'Database error',
       data: '',
     });

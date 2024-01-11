@@ -2,18 +2,18 @@ const { sequelize, User, Contact } = require('../models');
 
 // check if a token is passed,if passed then verify and then pass to next function
 const verifyToken = async (req, res, next) => {
-  const bearerHeader = req.headers.authorization;
-  if (!bearerHeader) {
-    return res.status(401).json({
-      status: 'error',
-      message: 'Invalid token!',
-    });
-  }
   try {
+    const bearerHeader = req.headers.authorization;
+    if (!bearerHeader) {
+      return res.status(401).json({
+        status: 'failed',
+        message: 'Invalid token!',
+      });
+    }
     const token = bearerHeader.split(' ')[1];
     if (!token) {
       return res.status(401).json({
-        status: 'error',
+        status: 'failed',
         message: 'Invalid token!',
       });
     }
@@ -22,7 +22,7 @@ const verifyToken = async (req, res, next) => {
         token,
       },
     });
-    if (tokenExists.length === 0) {
+    if (!tokenExists) {
       return res.status(401).json({
         status: 'failed',
         message: 'Invalid token!',
@@ -32,7 +32,7 @@ const verifyToken = async (req, res, next) => {
     next();
   } catch (error) {
     return res.status(500).json({
-      status: 'error',
+      status: 'failed',
       message: 'Database error',
       data: '',
     });

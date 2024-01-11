@@ -26,6 +26,6 @@ router.get(
   searchValidator,
   validator,
   userController.search,
-); // search for a number
+); // search for a number or name
 
 module.exports = router;
