@@ -168,7 +168,7 @@ const search = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['id', 'email'],
+          attributes: ['id', 'email', 'name'],
         },
       ],
       order: [[sequelize.literal(`"Contact"."name" ILIKE '${name}%' DESC`)]],
